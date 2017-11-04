@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="7.2.000">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="7.2.000" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="text:read_document" compatibility="7.2.001" expanded="true" height="68" name="Read Document" width="90" x="112" y="340">
+        <parameter key="file" value="E:\1.txt"/>
+        <parameter key="extract_text_only" value="true"/>
+        <parameter key="use_file_extension_as_type" value="true"/>
+        <parameter key="content_type" value="txt"/>
+        <parameter key="encoding" value="SYSTEM"/>
+      </operator>
+      <operator activated="true" class="text:tokenize" compatibility="7.2.001" expanded="true" height="68" name="Tokenize" width="90" x="380" y="340">
+        <parameter key="mode" value="regular expression"/>
+        <parameter key="characters" value="./ ' &quot;"/>
+        <parameter key="expression" value="[-!#$%&amp;'()*+,:;&lt;=&gt;?@\[\\\]_{|}~]"/>
+        <parameter key="language" value="English"/>
+        <parameter key="max_token_length" value="3"/>
+      </operator>
+      <operator activated="true" class="text:filter_stopwords_english" compatibility="7.2.001" expanded="true" height="68" name="Filter Stopwords (English)" width="90" x="648" y="340"/>
+      <operator activated="true" class="text:transform_cases" compatibility="7.2.001" expanded="true" height="68" name="Transform Cases" width="90" x="782" y="340">
+        <parameter key="transform_to" value="lower case"/>
+      </operator>
+      <connect from_op="Read Document" from_port="output" to_op="Tokenize" to_port="document"/>
+      <connect from_op="Tokenize" from_port="document" to_op="Filter Stopwords (English)" to_port="document"/>
+      <connect from_op="Filter Stopwords (English)" from_port="document" to_op="Transform Cases" to_port="document"/>
+      <connect from_op="Transform Cases" from_port="document" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>
